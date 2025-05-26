@@ -1,11 +1,28 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import React, { useState } from 'react';
+import WeatherForm from '@/components/WeatherForm';
+import WeatherDisplay from '@/components/WeatherDisplay';
+
+interface WeatherData {
+  location: string;
+  temperature: string;
+  humidity: string;
+  windSpeed: string;
+  condition: string;
+}
 
 const Index = () => {
+  const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
+
+  const handlePrediction = (data: WeatherData) => {
+    setWeatherData(data);
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
+    <div className="min-h-screen weather-gradient p-4">
+      <div className="container mx-auto max-w-2xl">
+        <WeatherForm onPrediction={handlePrediction} />
+        {weatherData && <WeatherDisplay data={weatherData} />}
       </div>
     </div>
   );
