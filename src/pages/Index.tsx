@@ -5,10 +5,12 @@ import WeatherDisplay from '@/components/WeatherDisplay';
 interface WeatherData {
   location: string;
   temperature: string;
-  humidity: string;
-  windSpeed: string;
+  humidity: string; // Umidade relativa
+  pressure: string; // Nova propriedade
+  windSpeed: string; // Velocidade do vento
   condition: string;
 }
+
 
 const Index = () => {
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
@@ -17,13 +19,15 @@ const Index = () => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     
-    const data: WeatherData = {
-      location: formData.get('location') as string,
-      temperature: formData.get('temperature') as string,
-      humidity: formData.get('humidity') as string,
-      windSpeed: formData.get('windSpeed') as string,
-      condition: formData.get('condition') as string,
-    };
+   const data: WeatherData = {
+  location: formData.get('location') as string,
+  temperature: formData.get('temperature') as string,
+  humidity: formData.get('humidity') as string,
+  pressure: formData.get('pressure') as string, // Novo campo
+  windSpeed: formData.get('windSpeed') as string,
+  condition: formData.get('condition') as string,
+};
+
 
     setWeatherData(data);
   };
@@ -44,6 +48,19 @@ const Index = () => {
               <label htmlFor="temperature">Temperature (C):</label>
               <input type="number" id="temperature" name="temperature" className="form-input" required />
             </div>
+            <div className="form-group">
+              <label htmlFor="pressure">Pressão Atmosférica (hPa):</label>
+              <input
+                type="number"
+                id="pressure"
+                name="pressure"
+                className="form-input"
+                min="800"
+                max="1100"
+                required
+              />
+            </div>
+
 
             <div className="form-group">
               <label htmlFor="humidity">Relative Humidity (%):</label>
@@ -68,6 +85,17 @@ const Index = () => {
                 <option value="windy">💨 Ventoso</option>
               </select>
             </div>
+            const WeatherDisplay = ({ data }: { data: WeatherData }) => (
+              <div className="weather-result">
+                <h2>Clima para {data.location}</h2>
+                <p>🌡️ Temperatura: {data.temperature} °C</p>
+                <p>💧 Umidade Relativa: {data.humidity} %</p>
+                <p>📈 Pressão Atmosférica: {data.pressure} hPa</p>
+                <p>💨 Velocidade do Vento: {data.windSpeed} km/h</p>
+                <p>🌥️ Condição: {data.condition}</p>
+              </div>
+            );
+
 
             <button type="submit" className="prediction-button">
               Prediction
