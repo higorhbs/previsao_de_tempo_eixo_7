@@ -51,11 +51,17 @@ const Index = () => {
     const pressure = parseFloat(formData.get('pressure') as string);
     const windSpeed = parseFloat(formData.get('windSpeed') as string);
 
+    const isDev = import.meta.env.MODE === "development";
+    const baseUrl = isDev
+      ? "/api"
+      : "https://eixo7-api.azurewebsites.net";
+    
     const endpoints = [
-      { url: "/api/predict/mlp", algorithm: "MLP" },
-      { url: "/api/predict/randomforest", algorithm: "Random Forest" },
-      { url: "/api/predict/decisiontree", algorithm: "Decision Tree" }
+      { url: `${baseUrl}/predict/mlp`, algorithm: "MLP" },
+      { url: `${baseUrl}/predict/randomforest`, algorithm: "Random Forest" },
+      { url: `${baseUrl}/predict/decisiontree`, algorithm: "Decision Tree" }
     ];
+
 
     try {
       const responses = await Promise.all(
